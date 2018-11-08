@@ -3,6 +3,10 @@
 (provide ins_beg)
 (provide ins_end)
 (provide cout_top_level)
+(provide count_instances)
+(provide count_instances_tr)
+(provide count_instances_tr_helper)
+(provide count_instances_deep)
 
 (define (ins_beg el lst)
   ;The (cons) function is used here to turn el into a list so it can be used in (append)
@@ -21,14 +25,25 @@
 )
 
 (define (count_instances elem list)
-  (if (not (empty? list))
-      (if (= elem (car list))
-          (+ 1 (count_instances elem (cdr list)))
-          (count_instances elem (cdr list))
-          )
-      0)
+  (cond [(empty? list) 0]
+        [(= elem (car list)) (+ 1 (count_instances elem (cdr list)))]
+        [else(count_instances elem (cdr list))]
+  )  
 )
 
+(define (count_instances_tr elem list)
+  (count_instances_tr_helper elem list 0)
+)
+
+
+(define (count_instances_tr_helper elem list number)
+  (cond [(empty? list) number]
+        [(= elem (car list)) (count_instances_tr_helper elem (cdr list)(+ 1 number))]
+        [else (count_instances_tr_helper elem (cdr list) number)]
+   )
+)
+
+(define (count_instances_deep) (display "wuwu") )
 
 ;Basic tests
 (display "Tests ins_beg \n")
@@ -51,6 +66,12 @@
 (count_instances 5 '(5 5 5 5 5 5))
 (count_instances 5 '(2 1 3 6 8 7))
 
+(display "\nTests count_instances_tr \n")
+(count_instances_tr 5 '(5 2 3 6 5 4 5))
+(count_instances_tr 5 '(5))
+(count_instances_tr 5 '())
+(count_instances_tr 5 '(5 5 5 5 5 5))
+(count_instances_tr 5 '(2 1 3 6 8 7))
 
 
 
