@@ -8,6 +8,11 @@
 (provide count_instances_tr_helper)
 (provide count_instances_deep)
 
+;;Atom function for the deep search
+(define (atom? x)
+  (not (or (pair? x) (null? x)))
+)
+
 (define (ins_beg el lst)
   ;The (cons) function is used here to turn el into a list so it can be used in (append)
   (append (cons el empty) lst)
@@ -43,7 +48,16 @@
    )
 )
 
-(define (count_instances_deep) (display "wuwu") )
+(define (count_instances_deep elem list)
+  ;;if the list is empty return 0
+  (cond[(empty? list) 0]
+       ;;if the first element isn't an atom, we count the number of elements inside of it 
+       [(not(atom? (car list))) (+ (count_instances_deep elem (car list)) (count_instances_deep elem (cdr list)))]
+       ;;if the first element is the good 1 we add 1
+       [(= elem (car list)) (+ 1 (count_instances_deep elem (cdr list)))]
+       ;;if it isn't we go to the next element
+       [else (count_instances_deep elem (cdr list))]
+))
 
 ;Basic tests
 (display "Tests ins_beg \n")
@@ -72,6 +86,13 @@
 (count_instances_tr 5 '())
 (count_instances_tr 5 '(5 5 5 5 5 5))
 (count_instances_tr 5 '(2 1 3 6 8 7))
+
+(display "\nTests count_instances_deep \n")
+(count_instances_deep 5 '(5 (2 3 6 5) 4 5))
+(count_instances_deep 5 '(5))
+(count_instances_deep 5 '())
+(count_instances_deep 5 '(5 (5 5 5) 5 5))
+(count_instances_deep 5 '(2 (5 3 1) 3 6 8 7))
 
 
 
