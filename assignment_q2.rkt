@@ -92,7 +92,7 @@
 (count_instances_deep 5 '(5))
 (count_instances_deep 5 '())
 (count_instances_deep 5 '(5 (5 5 5) 5 5))
-(count_instances_deep 5 '(2 (5 3 1) 3 6 8 7))
+(count_instances_deep 5 '(2 (5 3 (5 (5) 2) 1) 3 6 8 7))
 
 
 
